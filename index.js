@@ -237,7 +237,5 @@ export const composableReducer = (
 
   guardAgainstMissingAliases(missing)
 
-	console.log(reducerMap)
-
   return handleDispatch(reducerMap, actionKey)
 }
