@@ -22,27 +22,27 @@ $ yarn add composable-reducer
 import { composableReducer } from "composable-reducer"
 
 const reducer = composableReducer({
-	setDiscountPercentage: (_, ({ percentage }) => ({
-		percentage,
-	}),
-	percentage: ({ percentage, price }) => ({
-		discount: percentage / 100 * price,
-	}),
-	decrease: ({ discount, price }) => ({
-		discountedPrice: price - discount,
-	}),
-	setLabel: (_, { label }) => ({
-		label,
-	}),
-	setDiscountedPrice: [
-		'setDiscountPercentage',
-		'percentage',
-		'decrease',
-		'label({ "label": "Sales!" })',
-	],
+  setDiscountPercentage: (_, { percentage }) => ({
+    percentage,
+  }),
+  percentage: ({ percentage, price }) => ({
+    discount: (percentage / 100) * price,
+  }),
+  decrease: ({ discount, price }) => ({
+    discountedPrice: price - discount,
+  }),
+  setLabel: (_, { label }) => ({
+    label,
+  }),
+  setDiscountedPrice: [
+    "setDiscountPercentage",
+    "percentage",
+    "decrease",
+    'setLabel({ "label": "Sales!" })',
+  ],
 })
 
-reducer({ price: 50 }, { type: 'setDiscountedPrice', percentage: 25 })
+reducer({ price: 50 }, { type: "setDiscountedPrice", percentage: 20 })
 
-// => { price: 50, percentage: 20, discount: 10, discountedPrice: 40 }
+// => { price: 50, percentage: 20, discount: 10, discountedPrice: 40, label: 'Sales!' }
 ```
