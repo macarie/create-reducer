@@ -2,7 +2,7 @@
 
 > Create composable reducers on the fly from objects
 
-![Build](https://github.com/macarie/composable-reducer/workflows/test/badge.svg) ![Coverage Status](https://img.shields.io/codecov/c/github/macarie/composable-reducer) [![License](https://img.shields.io/npm/l/composable-reducer?color=42cdad)](https://github.com/macarie/compatto/blob/master/license)
+[![Build](https://github.com/macarie/composable-reducer/workflows/test/badge.svg)](https://github.com/macarie/composable-reducer/actions?query=workflow%3Atest) [![Coverage Status](https://codecov.io/gh/macarie/composable-reducer/branch/next/graph/badge.svg)](https://codecov.io/gh/macarie/composable-reducer) [![GitHub](https://img.shields.io/github/license/macarie/composable-reducer?color=42cdad)](https://github.com/macarie/composable-reducer/blob/master/license)
 
 ## Install
 
