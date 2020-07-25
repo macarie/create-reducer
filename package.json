@@ -1,84 +1,84 @@
 {
-	"name": "composable-reducer",
-	"version": "0.1.0",
-	"description": "Create composable reducers on the fly from objects",
-	"license": "MIT",
-	"type": "module",
-	"exports": {
-		".": "./index.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/macarie/composable-reducer.git"
-	},
-	"bugs": {
-		"url": "https://github.com/macarie/composable-reducer/issues"
-	},
-	"homepage": "https://github.com/macarie/composable-reducer#readme",
-	"author": {
-		"name": "Raul Macarie",
-		"email": "raul@macarie.me",
-		"url": "https://macarie.me"
-	},
-	"engines": {
-		"node": ">=11"
-	},
-	"files": [
-		"index.js"
-	],
-	"keywords": [
-		"reducer",
-		"react",
-		"hooks",
-		"helper",
-		"composability",
-		"composable",
-		"function",
-		"functions",
-		"functional",
-		"browser",
-		"node",
-		"module",
-		"esm"
-	],
-	"scripts": {
-		"ava": "c8 ava --verbose",
-		"lint": "xo",
-		"test": "run-s -s lint ava",
-		"coverage": "c8 report --reporter=text-lcov | codecov --pipe --disable=gcov"
-	},
-	"devDependencies": {
-		"ava": "^3.10.1",
-		"c8": "^7.2.1",
-		"codecov": "^3.7.1",
-		"npm-run-all": "^4.1.5",
-		"xo": "^0.32.1"
-	},
-	"xo": {
-		"prettier": true,
-		"rules": {
-			"unicorn/import-index": [
-				"off"
-			],
-			"import/extensions": [
-				"off"
-			],
-			"import/no-useless-path-segments": [
-				"off"
-			],
-			"unicorn/no-fn-reference-in-iterator": [
-				"off"
-			],
-			"unicorn/no-reduce": [
-				"off"
-			]
-		}
-	},
-	"prettier": {
-		"semi": false,
-		"bracketSpacing": true,
-		"useTabs": true,
-		"endOfLine": "lf",
-		"trailingComma": "es5"
-	}
+  "name": "composable-reducer",
+  "version": "0.1.0",
+  "description": "Create composable reducers on the fly from objects",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/macarie/composable-reducer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/macarie/composable-reducer/issues"
+  },
+  "homepage": "https://github.com/macarie/composable-reducer#readme",
+  "author": {
+    "name": "Raul Macarie",
+    "email": "raul@macarie.me",
+    "url": "https://macarie.me"
+  },
+  "engines": {
+    "node": ">=11"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "reducer",
+    "react",
+    "hooks",
+    "helper",
+    "composability",
+    "composable",
+    "function",
+    "functions",
+    "functional",
+    "browser",
+    "node",
+    "module",
+    "esm"
+  ],
+  "scripts": {
+    "ava": "c8 ava --verbose",
+    "lint": "xo",
+    "test": "run-s -s lint ava",
+    "coverage": "c8 report --reporter=text-lcov | codecov --pipe --disable=gcov"
+  },
+  "devDependencies": {
+    "ava": "^3.10.1",
+    "c8": "^7.2.1",
+    "codecov": "^3.7.1",
+    "npm-run-all": "^4.1.5",
+    "xo": "^0.32.1"
+  },
+  "xo": {
+    "prettier": true,
+    "rules": {
+      "unicorn/import-index": [
+        "off"
+      ],
+      "import/extensions": [
+        "off"
+      ],
+      "import/no-useless-path-segments": [
+        "off"
+      ],
+      "unicorn/no-fn-reference-in-iterator": [
+        "off"
+      ],
+      "unicorn/no-reduce": [
+        "off"
+      ]
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "bracketSpacing": true,
+    "useTabs": false,
+    "endOfLine": "lf",
+    "trailingComma": "es5"
+  }
 }
