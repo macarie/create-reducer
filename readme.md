@@ -12,7 +12,7 @@ First and foremost, `composableReducer` is a _helper_ that lets developers creat
 
 Throw in the mix the possibility to define aliases for micro-reducers and composed-reducers, the possibility to pass static arguments around (e.g. `addOne: 'add({ "amount": 1 })'`, where `add` is just a micro-reducer), and you have a pretty powerful utility in your hands<sup>☝🏼</sup>. The best part about the static-arguments thing? They have the highest priority (i.e. they can't be overridden), can be used in aliases for composed-reducers, and are thrown away after being used, so they don't pollute your micro-reducer chain!
 
-<small>_☝🏼: Seriously, you can extract all the business logic from a component and add features just by adding micro-reducers and combined-reducers, give it a try!_</small>
+<small>_☝🏼: Seriously, you can extract all the business logic from a component and add features just by adding micro-reducers and composed-reducers, give it a try!_</small>
 
 ## Features
 
