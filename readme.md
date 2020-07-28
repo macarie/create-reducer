@@ -4,7 +4,7 @@
 
 [![Build](https://github.com/macarie/composable-reducer/workflows/test/badge.svg)](https://github.com/macarie/composable-reducer/actions?query=workflow%3Atest) [![Coverage Status](https://codecov.io/gh/macarie/composable-reducer/branch/next/graph/badge.svg)](https://codecov.io/gh/macarie/composable-reducer) [![GitHub](https://img.shields.io/github/license/macarie/composable-reducer?color=42cdad)](https://github.com/macarie/composable-reducer/blob/master/license)
 
-First and foremost, `composableReducer` is a _helper_ that lets developers create reducers on the fly from objects and their `key => value` pairs, where `key`s are the `dispatch` type, thus reducing the boilerplate you have to write while creating reducers to use with React's `useReducer` hook.
+First and foremost, `composableReducer` is a _helper_ that lets developers create reducers on the fly from objects and their `key => value` pairs, where `key`s are the `dispatch` types, thus reducing the boilerplate you have to write while creating reducers to use with React's `useReducer` hook.
 
 <a name="micro-reducers"></a>Each function returns only the piece of state it wants to modify. I call these _micro-reducers_.
 
@@ -82,3 +82,29 @@ const Component = ({ price }) => {
   )
 }
 ```
+
+## API
+
+### composableReducer(object, options)
+
+Create a reducer from `object` by using its `key => value` pairs, where `key`s are the `dispatch` types and `value`s are their handlers. Read more about [micro-reducers](#user-content-micro-reducers) and [composed-reducers](#user-content-composed-reducers) above.
+
+#### object
+
+Type: `object`
+
+#### options
+
+Type: `object`
+
+##### options.actionKey
+
+Type: `string`
+
+Default Value: `"type"`
+
+The `dispatch` property that should be used to distinguish between different `dispatch`es, by default it's `"type"`, e.g. `dispatch({ type: 'add' })`.
+
+## Browser support
+
+The latest version of Chrome, Firefox, Safari, and Edge. I think that Edge 12 is the lowest you can go.
