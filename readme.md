@@ -64,4 +64,21 @@ const reducer = composableReducer({
 reducer({ price: 50 }, { type: "setDiscountedPrice", percentage: 20 })
 
 // => { price: 50, percentage: 20, discount: 10, discountedPrice: 40, label: 'Sales!' }
+
+const Component = ({ price }) => {
+  const [{ price, discountedPrice = price }, dispatch] = useReducer(reducer, {
+    price: price,
+  })
+
+  useTimeout(
+    () => dispatch({ type: "setDiscountedPrice", percentage: 20 }),
+    5000
+  )
+
+  return (
+    <>
+      {discountedPrice < price && <del>{price}</del>} {discountedPrice}
+    </>
+  )
+}
 ```
