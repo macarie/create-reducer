@@ -2,7 +2,7 @@
 
 > Create composable reducers on the fly from objects
 
-[![Build](https://github.com/macarie/composable-reducer/workflows/test/badge.svg)](https://github.com/macarie/composable-reducer/actions?query=workflow%3Atest) [![Coverage Status](https://codecov.io/gh/macarie/composable-reducer/branch/next/graph/badge.svg)](https://codecov.io/gh/macarie/composable-reducer) [![GitHub](https://img.shields.io/github/license/macarie/composable-reducer?color=42cdad)](https://github.com/macarie/composable-reducer/blob/master/license)
+[![Test Results](https://github.com/macarie/composable-reducer/workflows/test/badge.svg?branch=next)](https://github.com/macarie/composable-reducer/actions?query=workflow%3Atest) [![Coverage Status](https://codecov.io/gh/macarie/composable-reducer/branch/next/graph/badge.svg)](https://codecov.io/gh/macarie/composable-reducer) [![License Type](https://img.shields.io/github/license/macarie/composable-reducer?color=42cdad)](https://github.com/macarie/composable-reducer/blob/master/license)
 
 First and foremost, `composableReducer` is a _helper_ that lets developers create reducers on the fly from objects and their `key => value` pairs, where `key`s are the `dispatch` types, thus reducing the boilerplate you have to write while creating reducers to use with React's `useReducer` hook.
 
