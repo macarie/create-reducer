@@ -47,6 +47,9 @@
     "test": "run-s -s lint ava",
     "coverage": "c8 report --reporter=text-lcov | codecov --pipe --disable=gcov"
   },
+  "dependencies": {
+    "ksdc": "^1.0.4"
+  },
   "devDependencies": {
     "ava": "^3.10.1",
     "c8": "^7.2.1",

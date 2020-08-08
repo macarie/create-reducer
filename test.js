@@ -158,13 +158,13 @@ test('errors', (t) => {
 
   t.throws(
     () => {
-      reducer(state, { type: 'hola' })
+      reducer(state, { type: 'degrease' })
     },
     {
       instanceOf: TypeError,
       message: `Expected action "type" to be one of ${Object.keys(reducerObject)
         .sort()
-        .join(', ')}, but it's hola.`,
+        .join(', ')}, but it's degrease; did you mean to use decrease instead?`,
     },
     'Should throw when calling a reducer "type" that doesn\'t exist'
   )
