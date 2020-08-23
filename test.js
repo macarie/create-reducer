@@ -106,66 +106,35 @@ test('custom argument', (t) => {
 })
 
 test('errors', (t) => {
-  t.throws(
-    () => {
+  t.snapshot(
+    t.throws(() => {
       composableReducer({ a: {} })
-    },
-    {
-      instanceOf: TypeError,
-      message:
-        'The reducer associated with "a" is of type Object, this type is not supported.',
-    },
-    'Should throw when trying to create a reducer with unsupported data types.'
+    })
   )
 
-  t.throws(
-    () => {
+  t.snapshot(
+    t.throws(() => {
       composableReducer({ a: [{}] })
-    },
-    {
-      instanceOf: TypeError,
-      message:
-        'One of the reducers associated with "a" is of type Object, this type is not supported.',
-    },
-    'Should throw when trying to compose reducers with unsupported data types.'
+    })
   )
 
-  t.throws(
-    () => {
+  t.snapshot(
+    t.throws(() => {
       composableReducer({ a: 'b', b: 'a' })
-    },
-    {
-      instanceOf: TypeError,
-      message:
-        "Found an infinite cycle of aliases, the (key => value) pairs are: ('b' => 'a'), ('a' => 'b').",
-    },
-    'Should throw when trying to create a reducer with an infinite cycle of aliases.'
+    })
   )
 
-  t.throws(
-    () => {
+  t.snapshot(
+    t.throws(() => {
       composableReducer({ a: 'b' })
-    },
-    {
-      instanceOf: TypeError,
-      message:
-        "It wasn't possible to locate some aliases, the missing (key => value) pairs are: ('a' => 'b').",
-    },
-    'Should throw when trying to create a reducer with an unresolvable alias'
+    })
   )
 
   const reducer = composableReducer(reducerObject)
 
-  t.throws(
-    () => {
+  t.snapshot(
+    t.throws(() => {
       reducer(state, { type: 'degrease' })
-    },
-    {
-      instanceOf: TypeError,
-      message: `Expected action "type" to be one of ${Object.keys(reducerObject)
-        .sort()
-        .join(', ')}, but it's degrease; did you mean to use decrease instead?`,
-    },
-    'Should throw when calling a reducer "type" that doesn\'t exist'
+    })
   )
 })

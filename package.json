@@ -84,5 +84,8 @@
     "useTabs": false,
     "endOfLine": "lf",
     "trailingComma": "es5"
+  },
+  "ava": {
+    "snapshotDir": "./snapshots"
   }
 }
