@@ -116,3 +116,5 @@ export const composableReducer = (
 
   return handleDispatch(reducers, actionKey)
 }
+
+export default composableReducer
