@@ -107,6 +107,12 @@ test('composed:functions', (t) => {
   )
 })
 
+test('action-key', (t) => {
+  const r = composableReducer({ add }, { actionKey: 'action' })
+
+  t.snapshot(r(state, { action: 'add', addend: 5 }), 'custom action key')
+})
+
 test('errors', (t) => {
   t.snapshot(
     t.throws(() => composableReducer({ wrongType: {} })),
