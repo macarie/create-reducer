@@ -21,7 +21,8 @@ export const composableReducer = (
 
   const unresolved = []
 
-  for (const [name, alias] of aliases) {
+  for (let index = aliases.length - 1; index >= 0; index -= 1) {
+    const [name, alias] = aliases[index]
     const [normalizedAlias, aliasArguments] = normalizeAlias(alias)
 
     if (reducers.has(normalizedAlias)) {
@@ -31,15 +32,19 @@ export const composableReducer = (
         name,
         aliasArguments ? enhanceReducer(reducer, aliasArguments) : reducer
       )
-    } else {
-      unresolved.push([name, alias])
+
+      aliases.splice(index, 1)
+
+      index = aliases.length
     }
   }
+
+  unresolved.push(...aliases)
 
   for (const [name, reducerParts] of composed) {
     const composedReducer = []
 
-    for (const reducer of reducerParts) {
+    for (const [index, reducer] of reducerParts.entries()) {
       const typeOfReducer = typeof reducer
 
       if (typeOfReducer === 'string') {
@@ -62,7 +67,7 @@ export const composableReducer = (
         composedReducer.push(reducer)
       } else {
         throw new TypeError(
-          `Supported reducer types for composed reducers are (function | string), "${name}" is ${getType(
+          `Supported reducer types for composed reducers are (function | string), "${name}[${index}]" is ${getType(
             reducer
           )}.`
         )
@@ -79,36 +84,31 @@ export const composableReducer = (
     const [normalizedAlias, aliasArguments] = normalizeAlias(alias)
 
     if (reducers.has(normalizedAlias)) {
-      const reducer = reducers.get(normalizedAlias)
+      if (reducers.has(name)) {
+        const composedReducer = reducers.get(name)
+        const aliasIndex = composedReducer.findIndex(
+          (reducer) => reducer === alias
+        )
 
-      reducers.set(
-        name,
-        aliasArguments ? enhanceReducer(reducer, aliasArguments) : reducer
-      )
+        composedReducer.splice(
+          aliasIndex,
+          1,
+          ...enhanceReducer(reducers.get(alias), aliasArguments)
+        )
 
-      unresolved.splice(index, 1)
-    }
-  }
+        reducers.set(name, composedReducer)
+      } else {
+        const reducer = reducers.get(normalizedAlias)
 
-  for (let index = unresolved.length - 1; index >= 0; index -= 1) {
-    const [name, alias] = unresolved[index]
-    const [normalizedAlias, aliasArguments] = normalizeAlias(alias)
-
-    if (reducers.has(name) && reducers.has(normalizedAlias)) {
-      const composedReducer = reducers.get(name)
-      const aliasIndex = composedReducer.findIndex(
-        (reducer) => reducer === alias
-      )
-
-      composedReducer.splice(
-        aliasIndex,
-        1,
-        ...enhanceReducer(reducers.get(normalizedAlias), aliasArguments)
-      )
-
-      reducers.set(name, composedReducer)
+        reducers.set(
+          name,
+          aliasArguments ? enhanceReducer(reducer, aliasArguments) : reducer
+        )
+      }
 
       unresolved.splice(index, 1)
+
+      index = unresolved.length
     }
   }
 
