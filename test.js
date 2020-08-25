@@ -1,140 +1,137 @@
 import test from 'ava'
 
-import { composableReducer } from './index.js'
+import composableReducer from './index.js'
 
 const state = {
-  counter: 1,
-  string: 'hello',
+  result: 5,
 }
 
-const reducerObject = {
-  increase: ({ counter }, { amount = 1 }) => ({
-    counter: counter + amount,
-  }),
-  decrease: ({ counter }, { amount = 1 }) => ({
-    counter: counter - amount,
-  }),
-  double: ({ counter }) => ({
-    counter: counter + counter,
-  }),
-  times: ({ counter }, { number = 0 }) => ({
-    counter: counter * number,
-  }),
-  timesTwo: 'double',
-  complex: ['increase', 'double', 'decrease', 'timesTwo'],
-  repeatStringCounterTimes: [
-    'increase',
-    'double',
-    ({ counter, string }) => ({
-      string: string.repeat(counter),
-    }),
-  ],
-  rsct: 'repeatStringCounterTimes',
-  increaseByFour: 'increase({ "amount": 4 })',
-  add: 'increase',
-  customArguments: [
-    'increase({ "amount": 4 })',
-    'decrease({ "amount": 3 })',
-    'times',
-    'increaseByFour',
-    'rsct({ "amount": 2 })',
-    'add({ "amount": 2 })',
-  ],
-}
+const add = ({ result }, { addend }) => ({
+  result: result + addend,
+})
+
+const multiply = ({ result }, { multiplicand }) => ({
+  result: result * multiplicand,
+})
 
 test('basic', (t) => {
-  const reducer = composableReducer(reducerObject)
+  const r = composableReducer({ add })
 
-  t.deepEqual(
-    reducer(state, {
-      type: 'increase',
-      amount: 5,
-    }),
-    { ...state, counter: state.counter + 5 }
+  t.snapshot(r(state, { type: 'add', addend: 10 }), 'basic')
+})
+
+test('alias', (t) => {
+  const r = composableReducer({ add, alias: 'add' })
+
+  t.snapshot(r(state, { type: 'alias', addend: 10 }), 'alias')
+})
+
+test('composed', (t) => {
+  const r = composableReducer({ add, multiply, mix: ['add', 'multiply'] })
+
+  t.snapshot(r(state, { type: 'mix', addend: 5, multiplicand: 10 }), 'composed')
+})
+
+test('alias:nested', (t) => {
+  const r = composableReducer({
+    add,
+    thirdAlias: 'secondAlias',
+    secondAlias: 'firstAlias',
+    firstAlias: 'add',
+  })
+
+  t.snapshot(r(state, { type: 'thirdAlias', addend: 10 }), 'nested alias')
+})
+
+test('alias:composed', (t) => {
+  const r = composableReducer({
+    add,
+    multiply,
+    addAlias: 'add',
+    mix: ['addAlias', 'multiply'],
+    mixAlias: 'mix',
+    nestedMixAlias: 'mixAlias',
+    composedMix: ['add', 'nestedMixAlias'],
+  })
+
+  t.snapshot(
+    r(state, { type: 'mix', addend: 5, multiplicand: 10 }),
+    'alias inside composed'
   )
-
-  t.deepEqual(
-    reducer(state, {
-      type: 'decrease',
-      amount: 5,
-    }),
-    { ...state, counter: state.counter - 5 }
+  t.snapshot(
+    r(state, { type: 'mixAlias', addend: 5, multiplicand: 10 }),
+    'alias to composed'
   )
-
-  t.deepEqual(
-    reducer(state, {
-      type: 'double',
-    }),
-    { ...state, counter: state.counter * 2 }
+  t.snapshot(
+    r(state, { type: 'nestedMixAlias', addend: 5, multiplicand: 10 }),
+    'nested alias to composed'
+  )
+  t.snapshot(
+    r(state, { type: 'composedMix', addend: 5, multiplicand: 10 }),
+    'nested alias to composed inside composed'
   )
 })
 
-test('aliases', (t) => {
-  const reducer = composableReducer(reducerObject)
+test('alias:arguments', (t) => {
+  const r = composableReducer({
+    add,
+    multiply,
+    add5: 'add({ "addend": 5 })',
+    addThenMultiply: ['add', 'multiply'],
+    add10Multiply99: 'addThenMultiply({ "addend": 10, "multiplicand": 99 })',
+  })
 
-  t.deepEqual(
-    reducer(state, {
-      type: 'timesTwo',
-    }),
-    { ...state, counter: state.counter * 2 }
+  t.snapshot(r(state, { type: 'add5' }), 'alias with arguments')
+  t.snapshot(
+    r(state, { type: 'add10Multiply99' }),
+    'alias with arguments to composed'
   )
 })
 
-test('composability', (t) => {
-  const reducer = composableReducer(reducerObject)
-
-  t.deepEqual(reducer(state, { type: 'complex' }), {
-    ...state,
-    counter: ((state.counter + 1) * 2 - 1) * 2,
+test('composed:arguments', (t) => {
+  const r = composableReducer({
+    add,
+    multiply,
+    mix: ['add({ "addend": 10 })', 'multiply({ "multiplicand": 10 })'],
   })
 
-  t.deepEqual(reducer(state, { type: 'repeatStringCounterTimes', amount: 4 }), {
-    counter: (state.counter + 4) * 2,
-    string: state.string.repeat((state.counter + 4) * 2),
-  })
+  t.snapshot(r(state, { type: 'mix' }), 'composed with arguments')
 })
 
-test('custom argument', (t) => {
-  const reducer = composableReducer(reducerObject)
+test('composed:functions', (t) => {
+  const r = composableReducer({ add, mix: ['add', multiply] })
 
-  t.deepEqual(reducer(state, { type: 'customArguments', number: 2 }), {
-    counter: ((state.counter + 4 - 3) * 2 + 4 + 2) * 2 + 2,
-    get string() {
-      return state.string.repeat(this.counter - 2)
-    },
-  })
+  t.snapshot(
+    r(state, { type: 'mix', addend: 10, multiplicand: 10 }),
+    'composed with function'
+  )
 })
 
 test('errors', (t) => {
   t.snapshot(
-    t.throws(() => {
-      composableReducer({ a: {} })
-    })
+    t.throws(() => composableReducer({ wrongType: {} })),
+    'reducer must be (function | string | array)'
   )
 
   t.snapshot(
-    t.throws(() => {
-      composableReducer({ a: [{}] })
-    })
+    t.throws(() => composableReducer({ add, mix: [add, {}] })),
+    'composed reducers must be (function | string)'
   )
 
   t.snapshot(
-    t.throws(() => {
-      composableReducer({ a: 'b', b: 'a' })
-    })
+    t.throws(() => composableReducer({ cycle: 'infinite', infinite: 'cycle' })),
+    'alias cycles must throw'
   )
 
   t.snapshot(
-    t.throws(() => {
-      composableReducer({ a: 'b' })
-    })
+    t.throws(() => composableReducer({ unresolved: 'dunno' })),
+    'unresolved reducers must throw'
   )
 
-  const reducer = composableReducer(reducerObject)
-
   t.snapshot(
-    t.throws(() => {
-      reducer(state, { type: 'degrease' })
-    })
+    t.throws(() =>
+      composableReducer({ add, mul: 'add' })(state, { type: 'multiply' })
+    ),
+    'dispatching an unknown reducer type should throw and suggest a close match'
   )
 })
